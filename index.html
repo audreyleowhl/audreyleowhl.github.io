@@ -17,9 +17,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 		<title>Interactive Word Clouds</title>
     <link rel="stylesheet" type="text/css" href="index.css">
     <!-- Text corpus calculation in Javascript. Supports Chinese, English. -->
-		<script type="text/javascript" src="wordfreq-master/src/wordfreq.js"></script> <!-- Doesn't work in Chrome -->
+		<script type="text/javascript" src="wordfreq-master/src/wordfreq.js"></script>
     <!-- Tag cloud/Wordle presentation on 2D canvas or HTML -->
-    <script type="text/javascript" src="wordcloud2.js-master/src/wordcloud2.js"></script> <!-- Doesn't work in Chrome -->
+    <script type="text/javascript" src="wordcloud2.js-master/src/wordcloud2.js"></script>
 	</head>
 	<body>
     <h1>Interactive Word Clouds</h1>
@@ -28,6 +28,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
         <p id="enterTextLabel">Enter text here:</p>
         <textarea id="wordCloudText" rows="30" cols="45" autocomplete="off"></textarea>
         <br>
+        <button id="clearText" type="reset" onclick="clearPage()">Clear text</button>
         <button id="singleWordCloudButton" type="button" onclick="generateSingleWordCloud()">Generate single-word word cloud</button>
         <button id="compoundWordCloudButton" type="button" onclick="generateCompoundWordCloud()">Generate compound-word word cloud</button>
       </form>
@@ -37,6 +38,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 
     <!-- Javascript to create the wordclouds -->
     <script type="text/javascript">
+    // Function to clear the canvas
+    function clearPage() {
+    	var canvas = document.getElementById("my_canvas");
+    	// Clear the canvas
+    	canvas.innerHTML = "";
+    }
+
     // Function to generate single word word clouds
     function generateSingleWordCloud() {
       // Create an options object for initialization

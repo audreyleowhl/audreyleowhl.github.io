@@ -47,6 +47,14 @@ h1 {
 	margin-left: 85px;
 }
 
+#clearText {
+	border-style: none;
+	background-color: white;
+	float: right;
+	text-decoration: underline;
+	color: #3333ff;
+}
+
 body {
-	overflow-y: hidden;
+	/*overflow-y: hidden;*/
 }
