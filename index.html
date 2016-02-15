@@ -26,7 +26,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
     <div id="controls">
       <form>
         <p id="enterTextLabel">Enter text here:</p>
-        <textarea id="wordCloudText" rows="30" cols="45" autocomplete="off"></textarea>
+        <textarea autofocus id="wordCloudText" rows="30" cols="45" autocomplete="off"></textarea>
         <br>
         <button id="clearText" type="reset" onclick="clearPage()">Clear text</button>
         <button id="singleWordCloudButton" type="button" onclick="generateSingleWordCloud()">Generate single-word word cloud</button>
@@ -43,6 +43,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
     	var canvas = document.getElementById("my_canvas");
     	// Clear the canvas
     	canvas.innerHTML = "";
+    	// Set the focus to be on the text area
+    	var textArea = document.getElementById("wordCloudText");
+    	textArea.focus();
     }
 
     // Function to generate single word word clouds
