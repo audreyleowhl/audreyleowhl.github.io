@@ -52,7 +52,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
     function generateSingleWordCloud() {
       // Create an options object for initialization
       var options = {
-        workerUrl: 'wordfreq-master/src/wordfreq.worker.js' };
+        workerUrl: 'wordfreq-master/src/wordfreq.worker.js' 
+      };
       // Get the text in the textarea
       var text = document.getElementById("wordCloudText").value;
       // Generate the word frequencies list and then use the list to generate the wordcloud
@@ -60,7 +61,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
         // var canvas = document.getElementById("my_wordcloud_canvas");
         var canvas = document.getElementById("my_canvas");
         // Change the options based on how big the list is
-        if(list.length < 50) {
+        if(list.length <= 50) {
         	var options = {
           		list: list,
           		weightFactor: 10,
@@ -77,7 +78,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
           		gridSize: 8,
           		rotateRatio: 0.5,
           		origin: [400, 400],
-          		minSize: 8
+          		minSize: 10
         	};
         }
         // Generate the wordcloud in the canvas with the options provided
