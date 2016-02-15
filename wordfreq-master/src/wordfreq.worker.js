@@ -48,11 +48,11 @@ var WordFreqSync = function WordFreqSync(options) {
 
       case 'english1':
         options.stopWords = options.stopWords.concat([
-          'i','a','about', 'an','and','are','as','at',
-          'be', 'been','by','com','for', 'from','how','in',
-          'is','it','not', 'of','on','or','that',
+          'i','me','my','a','about', 'an','and','are','as','at','am',
+          'be','because','been','by','com','for', 'from','how','in',
+          'is','were','it','not', 'of','on','or','that',
           'the','this','to','was', 'what','when','where', 'which',
-          'who','will','with', 'www','the']);
+          'who','will','with', 'www','the','so','very']);
         break;
 
       case 'english2':
@@ -62,7 +62,7 @@ var WordFreqSync = function WordFreqSync(options) {
           'she', 'her', 'hers', 'it', 'its', 'you', 'yours', 'your',
           'has', 'have', 'would', 'could', 'should', 'shall',
           'can', 'may', 'if', 'then', 'else', 'but',
-          'there', 'these', 'those']);
+          'there', 'these', 'those','has','had']);
         break;
     }
   });
