@@ -13,15 +13,13 @@ h1 {
 #my_canvas {
 	width: 800px; 
 	height: 100px;
-	/*border-style: dashed;*/
 	padding-top: 500px;
-	/*overflow-y: hidden;*/
 }
 
 #my_wordcloud_canvas {
 	width: 800px; 
 	height: 600px;
-	border-style: dashed;
+	/*border-style: dashed;*/
 	/*padding-top: 500px;*/
 	/*padding-bottom: -500px;*/
 	/*overflow-y: hidden;*/

@@ -56,14 +56,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
       var wordfreq = WordFreq(options).process(text).getList(function (list) {
         // var canvas = document.getElementById("my_wordcloud_canvas");
         var canvas = document.getElementById("my_canvas");
-        // The options for the wordcloud
-        var options = {
-          list: list,
-          weightFactor: 5,
-          wait: 50,
-          gridSize: 6,
-          rotateRatio: 0
-        };
+        // Change the options based on how big the list is
+        if(list.length < 50) {
+        	var options = {
+          		list: list,
+          		weightFactor: 10,
+          		wait: 50,
+          		gridSize: 8,
+          		rotateRatio: 0.5,
+          		origin: [400, 400]
+        	};
+        } else {
+        	var options = {
+          		list: list,
+          		weightFactor: 1.5,
+          		wait: 50,
+          		gridSize: 8,
+          		rotateRatio: 0.5,
+          		origin: [400, 400],
+          		minSize: 8
+        	};
+        }
         // Generate the wordcloud in the canvas with the options provided
         var wordcloud = WordCloud(canvas, options);
       });
