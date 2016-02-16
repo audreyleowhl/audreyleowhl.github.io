@@ -13,113 +13,215 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 <!DOCTYPE html>
 <html>
 	<head>
-    <meta charset="utf-8"/>
+    	<meta charset="utf-8"/>
 		<title>Interactive Word Clouds</title>
-    <link rel="stylesheet" type="text/css" href="index.css">
-    <!-- Text corpus calculation in Javascript. Supports Chinese, English. -->
+    	<link rel="stylesheet" type="text/css" href="index.css">
+    	<!-- Text corpus calculation in Javascript. Supports Chinese, English. -->
 		<script type="text/javascript" src="wordfreq-master/src/wordfreq.js"></script>
-    <!-- Tag cloud/Wordle presentation on 2D canvas or HTML -->
-    <script type="text/javascript" src="wordcloud2.js-master/src/wordcloud2.js"></script>
+    	<!-- Tag cloud/Wordle presentation on 2D canvas or HTML -->
+    	<script type="text/javascript" src="wordcloud2.js-master/src/wordcloud2.js"></script>
 	</head>
-	<body>
-    <h1>Interactive Word Clouds</h1>
-    <div id="controls">
-      <form>
-        <p id="enterTextLabel">Enter text here:</p>
-        <textarea autofocus id="wordCloudText" rows="30" cols="45" autocomplete="off"></textarea>
-        <br>
-        <button id="clearText" type="reset" onclick="clearPage()">Clear text</button>
-        <button id="singleWordCloudButton" type="button" onclick="generateSingleWordCloud()">Generate single-word word cloud</button>
-        <button id="compoundWordCloudButton" type="button" onclick="generateCompoundWordCloud()">Generate compound-word word cloud</button>
-      </form>
-    </div>
-    <div id="my_canvas"></div>
-    <!-- <canvas id="my_wordcloud_canvas"></canvas> -->
+	<body onload="clearPage()">
+    	<h1>Interactive Word Clouds</h1>
+    	<div id="controls">
+      		<form>
+        		<p id="enterTextLabel" class="formContents">You can either enter your text here:</p>
+        		<textarea autofocus class="formContents" id="wordCloudText" rows="25" cols="45" autocomplete="off"></textarea>
+        		<br>
+        		<button id="clearText" type="reset" onclick="clearPage()">Clear text</button>
+        		<br>
 
-    <!-- Javascript to create the wordclouds -->
-    <script type="text/javascript">
-    // Function to clear the canvas
-    function clearPage() {
-    	var canvas = document.getElementById("my_canvas");
-    	// Clear the canvas
-    	canvas.innerHTML = "";
-    	// Set the focus to be on the text area
-    	var textArea = document.getElementById("wordCloudText");
-    	textArea.focus();
-    }
+        		<label class="formContents" for="fileUpload">Or upload your file here (only .txt files):</label>
+      			<input class="formContents" id="fileUpload" type="file"></input>
 
-    // Function to generate single word word clouds
-    function generateSingleWordCloud() {
-      // Create an options object for initialization
-      var options = {
-        workerUrl: 'wordfreq-master/src/wordfreq.worker.js' 
-      };
-      // Get the text in the textarea
-      var text = document.getElementById("wordCloudText").value;
-      // Generate the word frequencies list and then use the list to generate the wordcloud
-      var wordfreq = WordFreq(options).process(text).getList(function (list) {
-        // var canvas = document.getElementById("my_wordcloud_canvas");
-        var canvas = document.getElementById("my_canvas");
-        // Change the options based on how big the list is
-        if(list.length <= 50) {
-        	var options = {
-          		list: list,
-          		weightFactor: 10,
-          		wait: 50,
-          		gridSize: 8,
-          		rotateRatio: 0.5,
-          		origin: [400, 400]
-        	};
-        } else {
-        	var options = {
-          		list: list,
-          		weightFactor: 1.5,
-          		wait: 50,
-          		gridSize: 8,
-          		rotateRatio: 0.5,
-          		origin: [400, 400],
-          		minSize: 10
-        	};
-        }
-        // Generate the wordcloud in the canvas with the options provided
-        var wordcloud = WordCloud(canvas, options);
-      });
-    }
+        		<button id="singleWordCloudButton" type="button" onclick="generateSingleWordCloud()">Generate single-word word cloud</button>
+        		<button id="compoundWordCloudButton" type="button" disabled onclick="generateCompoundWordCloud()">Generate compound-word word cloud</button>
+      		</form>
+    	</div>
+    	<div id="my_canvas"></div>
 
-    // Function to generate compound word word clouds
-    function generateCompoundWordCloud() {
-    	var xmlhttp = new XMLHttpRequest();
-    	xmlhttp.open('POST', 'http://www.nactem.ac.uk/software/termine/webservice_key/', true);
+	    <!-- Javascript to create the wordclouds -->
+	    <script type="text/javascript">
+	    // Function to clear the canvas
+	    function clearPage() {
+	    	var canvas = document.getElementById("my_canvas");
+	    	// Clear the canvas
+	    	canvas.innerHTML = "";
+	    	var fileInput = document.getElementById("fileUpload");
+	    	// Clear the file input
+	    	fileInput.value = "";
+	    	// Set the focus to be on the text area
+	    	var textArea = document.getElementById("wordCloudText");
+	    	textArea.focus();
+	    }
 
-    	// Build SOAP request
-    	var sr = 
-    		'<?xml version="1.0" encoding="UTF-8"?>' +
-    		'<soapenv:Envelope ' +
-    			'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
-    			'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
-    			'xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">' +
-    			'<soapenv:Body>' +
-    				'<api:analyze soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
-    					'<src xsi:type="xsd:string">ice cream ice cream ice cream ice cream ice cream</src>' +
-    					'<key xsi:type="xsd:string">32de8fd45de222f7cacac28b42516db5aa86fda6b798bcfd49dd2d4</key>' +
-    				'</api:analyze>' +
-    			'</soapenv:Body>' +
-    		'</soapenv:Envelope>';
+	    // Function to generate single word word clouds
+	    function generateSingleWordCloud() {
+	    	// Create an options object for initialization
+	    	var options = {
+	        	workerUrl: 'wordfreq-master/src/wordfreq.worker.js',
+	        	minimumCount: 1 
+	    	};
 
-    	xmlhttp.onreadystatechange = function () {
-    		if(xmlhttp.readyState == 4) {
-    			if(xmlhttp.status == 200) {
-    				alert('done. use firebug/console to see network response');
-    			}
-    		}
-    	}
+	      	// Get the contents of the file
+	      	var fileContents = document.getElementById("fileUpload").files;
+	      	var file = fileContents[0];
 
-    	// Send the POST request
-    	xmlhttp.setRequestHeader('Content-Type', 'text/xml');
-    	xmlhttp.send(sr);
+	      	if (file) {
+	      		var fReader = new FileReader();
+	      		var textType = /text.*/;
 
-      // alert('Unfortunately this function has not been implemented yet');
-    }
-    </script>
+	      		if (file.type.match(textType)) {
+	      			fReader.onload = function(e) {
+	      				var fileText = fReader.result;
+	      				// Only generate the word cloud if we have some text
+	      				if (fileText != "") {
+	      					// Generate the word frequencies list and then use the list to generate the wordcloud
+	      					var wordfreq = WordFreq(options).process(fileText).getList(function (list) {
+	        					var canvas = document.getElementById("my_canvas");
+	        					var listToUse = list;
+	        					var options = {};
+	        					
+	        					// Create a shortened list which only has 60 words if the length of original list is more than 60
+	        					if (list.length > 60) {
+	        						var shortenedList = list.slice(0, 60);
+	        						listToUse = shortenedList;
+	        					}
+
+								// Change the options based on how big the largest word frequency is
+	        					if (listToUse[0][1] <= 10) { 
+	        						options = {
+	          							list: listToUse,
+	          							weightFactor: 10,
+	          							wait: 50,
+	          							gridSize: 8,
+	          							rotateRatio: 0,
+	          							origin: [400, 400]
+	        						};
+	        					} else if (listToUse[0][1] > 10 && listToUse[0][1] <= 20) {
+	        						options = {
+	          							list: listToUse,
+	          							weightFactor: 8,
+	          							wait: 50,
+	          							gridSize: 8,
+	          							rotateRatio: 0,
+	          							origin: [400, 400]
+	        						};
+	        					} else {
+	        						options = {
+	          							list: listToUse,
+	          							weightFactor: 1.5,
+	          							wait: 50,
+	          							gridSize: 8,
+	          							rotateRatio: 0,
+	          							origin: [400, 400]
+	        						};
+	        					}
+	        					// Generate the wordcloud in the canvas with the options provided
+	        					var wordcloud = WordCloud(canvas, options);
+	      					});
+	      				} else {
+	      					// Clear the canvas as we have no text
+	      					var canvas = document.getElementById("my_canvas");
+	      					canvas.innerHTML = "";
+	      				}
+	      			}
+	      			// Read the contents of the text file
+	      			fReader.readAsText(file);
+	      		} else {
+	      			alert("This file format is not supported! Please try again.");
+	      		}
+	  		}
+	      
+	      	// Get the text in the textarea
+	      	var text = document.getElementById("wordCloudText").value;
+	      	// Only generate the word cloud if the text area is not empty
+	      	if (text != "") {
+	      		// Generate the word frequencies list and then use the list to generate the wordcloud
+	      		var wordfreq = WordFreq(options).process(text).getList(function (list) {
+	        		var canvas = document.getElementById("my_canvas");
+	        		var listToUse = list;
+	        		var options = {};
+	        					
+	        		// Create a shortened list which only has 60 words if the length of original list is more than 60
+	        		if (list.length > 60) {
+	        			var shortenedList = list.slice(0, 60);
+	        			listToUse = shortenedList;
+	        		}
+
+					// Change the options based on how big the largest word frequency is
+	        		if (listToUse[0][1] <= 10) { 
+	        			options = {
+	          				list: listToUse,
+	          				weightFactor: 10,
+	          				wait: 50,
+	          				gridSize: 8,
+	          				rotateRatio: 0,
+	          				origin: [400, 400]
+	        			};
+	        		} else if (listToUse[0][1] > 10 && listToUse[0][1] <= 20) {
+	        			options = {
+	          				list: listToUse,
+	          				weightFactor: 8,
+	          				wait: 50,
+	          				gridSize: 8,
+	          				rotateRatio: 0,
+	          				origin: [400, 400]
+	        			};
+	        		} else {
+	        			options = {
+	          				list: listToUse,
+	          				weightFactor: 1.5,
+	          				wait: 50,
+	          				gridSize: 8,
+	          				rotateRatio: 0,
+	          				origin: [400, 400]
+	        			};
+	        		}
+	        		// Generate the wordcloud in the canvas with the options provided
+	        		var wordcloud = WordCloud(canvas, options);
+	      		});
+	      	} else {
+	      		// Clear the canvas as we have no text
+	      		var canvas = document.getElementById("my_canvas");
+	      		canvas.innerHTML = "";
+	      	}
+	    }//generateSingleWordCloud
+
+	    // Function to generate compound word word clouds
+	    function generateCompoundWordCloud() {
+	    	var xmlhttp = new XMLHttpRequest();
+	    	xmlhttp.open('POST', 'http://www.nactem.ac.uk/software/termine/webservice_key/', true);
+
+	    	// Build SOAP request
+	    	var sr = 
+	    		'<?xml version="1.0" encoding="UTF-8"?>' +
+	    		'<soapenv:Envelope ' +
+	    			'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+	    			'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
+	    			'xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">' +
+	    			'<soapenv:Body>' +
+	    				'<api:analyze soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
+	    					'<src xsi:type="xsd:string">ice cream ice cream ice cream ice cream ice cream</src>' +
+	    					'<key xsi:type="xsd:string">32de8fd45de222f7cacac28b42516db5aa86fda6b798bcfd49dd2d4</key>' +
+	    				'</api:analyze>' +
+	    			'</soapenv:Body>' +
+	    		'</soapenv:Envelope>';
+
+	    	xmlhttp.onreadystatechange = function () {
+	    		if(xmlhttp.readyState == 4) {
+	    			if(xmlhttp.status == 200) {
+	    				alert('done. use firebug/console to see network response');
+	    			}
+	    		}
+	    	}
+
+	    	// Send the POST request
+	    	xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+	    	xmlhttp.send(sr);
+
+	      // alert('Unfortunately this function has not been implemented yet');
+	    }//generateCompoundWordCloud
+	    </script>
 	</body>
 </html>

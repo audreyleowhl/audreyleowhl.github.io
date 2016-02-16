@@ -26,13 +26,11 @@ h1 {
 }
 
 #wordCloudText {
-	margin-left: 15px;
 	width: 360px;
 	resize: none;
 }
 
 #enterTextLabel {
-	margin-left: 15px;
 }
 
 #singleWordCloudButton {
@@ -53,4 +51,8 @@ h1 {
 	float: right;
 	text-decoration: underline;
 	color: #3333ff;
+}
+
+.formContents {
+	margin-left: 15px;
 }
