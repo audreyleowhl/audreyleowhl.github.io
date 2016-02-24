@@ -1,7 +1,7 @@
 <!-- Copyright (c) 2011 Timothy Guan-tin Chien, http://timc.idv.tw/
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to
-deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
@@ -26,7 +26,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 			<h1>Interactive Word Clouds</h1>
 			<a class="instructions" href="http://audreyleowhl.github.io/interactiveWordclouds/" target="_blank">How to use</a>
 		</header>
-    	
+
     	<div id="controls">
       		<form>
         		<p id="enterTextLabel" class="formContents">You can either enter your text here:</p>
@@ -34,7 +34,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
         		<br>
         		<button id="clearText" type="button" onclick="clearTextArea()">Clear text</button>
         		<br>
-        		
+
         		<p class="formContents" for="fileUpload">Or upload your file here (only text files):</p>
         		<div class="formBox formContents">
         			<input class="formContents" id="fileUpload" type="file" onchange="radioChangeToFile()"></input>
@@ -52,7 +52,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 
         		<br>
         		<button id="wordCloudButton" type="button" onclick="generateSingleWordCloud()">Single word cloud</button>
-        		<button id="wordCloudButton" type="button" disabled="disabled" onclick="generateCompoundWordCloud()">Compound word cloud</button>
+        		<button id="wordCloudButton" type="button" onclick="generateCompoundWordCloud()">Compound word cloud</button>
       		</form>
     	</div>
     	<div id="my_canvas"></div>
@@ -90,13 +90,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 
 	    	var textRadioButton = document.getElementById("textRadioSelection");
 	    	var fileRadioButton = document.getElementById("fileRadioSelection");
-			
+
 			if (file) {
 				// If there is, then add the checked attribute to the radio button for file
 				fileRadioButton.checked = true;
 	    		// Remove the checked attribute to the radio button for text
 	    		textRadioButton.checked = false;
-	    	}	
+	    	}
 	    }
 
 	    // Function to change radio button to text
@@ -144,7 +144,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	    	// Create an options object for initialization
 	    	var options = {
 	        	workerUrl: 'wordfreq-master/src/wordfreq.worker.js',
-	        	minimumCount: 1 
+	        	minimumCount: 1
 	    	};
 
 	    	// See which radio button is checked
@@ -170,7 +170,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	        						var canvas = document.getElementById("my_canvas");
 	        						var listToUse = list;
 	        						var options = {};
-	        					
+
 	        						// Create a shortened list which only has 60 words if the length of original list is more than 60
 	        						if (list.length > 60) {
 	        							var shortenedList = list.slice(0, 60);
@@ -178,7 +178,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	        						}
 
 									// Change the options based on how big the largest word frequency is
-	        						if (listToUse[0][1] <= 10) { 
+	        						if (listToUse[0][1] <= 10) {
 	        							options = {
 	          								list: listToUse,
 	          								weightFactor: 10,
@@ -231,7 +231,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	        			var canvas = document.getElementById("my_canvas");
 	        			var listToUse = list;
 	        			var options = {};
-	        					
+
 	        			// Create a shortened list which only has 60 words if the length of original list is more than 60
 	        			if (list.length > 60) {
 	        				var shortenedList = list.slice(0, 60);
@@ -239,7 +239,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	        			}
 
 						// Change the options based on how big the largest word frequency is
-	        			if (listToUse[0][1] <= 10) { 
+	        			if (listToUse[0][1] <= 10) {
 	        				options = {
 	          					list: listToUse,
 	          					weightFactor: 10,
@@ -284,7 +284,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	    	xmlhttp.open('POST', 'http://www.nactem.ac.uk/software/termine/webservice_key/', true);
 
 	    	// Build SOAP request
-	    	var sr = 
+	    	var sr =
 	    		'<?xml version="1.0" encoding="UTF-8"?>' +
 	    		'<soapenv:Envelope ' +
 	    			'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
