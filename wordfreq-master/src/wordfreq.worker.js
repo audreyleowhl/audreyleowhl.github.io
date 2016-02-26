@@ -123,7 +123,8 @@ var WordFreqSync = function WordFreqSync(options) {
         var stems = Object.create(null);
 
         // say bye bye to characters that is not belongs to a word
-        var words = text.split(/[^A-Za-zéÉ'’_\-0-9@\.]+/);
+        // var words = text.split(/[^A-Za-zéÉ'’_\-0-9@\.]+/);
+        var words = text.split(/[^A-Za-zéÉ'’_\-0-9@]+/);
 
         var stopWords = options.stopWords;
 

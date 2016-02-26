@@ -20,6 +20,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 		<script type="text/javascript" src="wordfreq-master/src/wordfreq.js"></script>
     	<!-- Tag cloud/Wordle presentation on 2D canvas or HTML -->
     	<script type="text/javascript" src="wordcloud2.js-master/src/wordcloud2.js"></script>
+		<!-- pdf.js which allows me to handle pdf files -->
+		<script type="text/javascript" src="https://raw.github.com/mozilla/pdf.js/gh-pages/build/pdf.js"></script>
 	</head>
 	<body onload="resetPage()">
 		<header>
@@ -159,8 +161,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	      		if (file) {
 	      			var fReader = new FileReader();
 	      			var textType = /text.*/;
+					var pdfType = /application.pdf/;
 
-	      			if (file.type.match(textType)) {
+	      			if (file.type.match(textType)) {	// If the type of file is a text file
 	      				fReader.onload = function(e) {
 	      					var fileText = fReader.result;
 	      					// Only generate the word cloud if we have some text
@@ -217,6 +220,83 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	      				}
 	      				// Read the contents of the text file
 	      				fReader.readAsText(file);
+	      			} else if (file.type.match(pdfType)) {	// If the type of file is a PDF file
+						fReader.onload = function(e) {
+	      					var fileData = fReader.result;
+
+							PDFJS.getDocument(fileData).then(function(pdf) {
+								// TODO - Get all the pages instead of just the first page
+								pdf.getPage(1).then(function(page) {
+									page.getTextContent().then(function(textContent) {
+										// Create array for all str in all elements in items array
+										var str = new Array();
+										for (var i = 0; i < textContent.items.length; i++) {
+											str.push(textContent.items[i].str);
+										}
+										console.log("STR: " + str);
+										// str array.join to create new long string
+										var text = str.join("");
+										console.log("TEXT: " + text);
+
+										// Only generate the word cloud if we have some text
+										if (text != "") {
+				      						// Generate the word frequencies list and then use the list to generate the wordcloud
+				      						var wordfreq = WordFreq(options).process(text).getList(function (list) {
+				        						var canvas = document.getElementById("my_canvas");
+				        						var listToUse = list;
+				        						var options = {};
+
+				        						// Create a shortened list which only has 60 words if the length of original list is more than 60
+				        						if (list.length > 60) {
+				        							var shortenedList = list.slice(0, 60);
+				        							listToUse = shortenedList;
+				        						}
+
+												console.log("LIST: " + list);
+
+												// Change the options based on how big the largest word frequency is
+				        						if (listToUse[0][1] <= 10) {
+				        							options = {
+				          								list: listToUse,
+				          								weightFactor: 10,
+				          								wait: 50,
+				          								gridSize: 8,
+				          								rotateRatio: 0,
+				          								origin: [400, 400]
+				        							};
+				        						} else if (listToUse[0][1] > 10 && listToUse[0][1] <= 20) {
+				        							options = {
+				          								list: listToUse,
+				          								weightFactor: 8,
+				          								wait: 50,
+				          								gridSize: 8,
+				          								rotateRatio: 0,
+				          								origin: [400, 400]
+				        							};
+				        						} else {
+				        							options = {
+				          								list: listToUse,
+				          								weightFactor: 1.5,
+				          								wait: 50,
+				          								gridSize: 8,
+				          								rotateRatio: 0,
+				          								origin: [400, 400]
+				        							};
+				        						}
+				        						// Generate the wordcloud in the canvas with the options provided
+				        						var wordcloud = WordCloud(canvas, options);
+				      						});
+										} else {
+				      						// Clear the canvas as we have no text
+				      						var canvas = document.getElementById("my_canvas");
+				      						canvas.innerHTML = "";
+										}
+									});
+								});
+							});
+	      				}
+	      				// Read the contents of the PDF file
+	      				fReader.readAsArrayBuffer(file);
 	      			} else {
 	      				alert("This file format is not supported! Please try again.");
 	      			}
