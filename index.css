@@ -1,9 +1,9 @@
 h1 {
-	color: #ffffff; 
-	font-family: 'Helvetica Neue', sans-serif; 
-	font-size: 60px; 
-	font-weight: bold; 
-	letter-spacing: -1px; 
+	color: #ffffff;
+	font-family: 'Helvetica Neue', sans-serif;
+	font-size: 60px;
+	font-weight: bold;
+	letter-spacing: -1px;
 	text-align: center;
 }
 
@@ -12,8 +12,8 @@ body {
 }
 
 p {
-	color: #47476b; 
-	font-family: 'Helvetica Neue', sans-serif; 
+	color: #47476b;
+	font-family: 'Helvetica Neue', sans-serif;
 	font-size: 14px;
 }
 
@@ -63,7 +63,7 @@ footer {
 }
 
 #my_canvas {
-	width: 800px; 
+	width: 800px;
 	height: 620px;
 }
 
@@ -99,6 +99,25 @@ footer {
   	background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
   	background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
   	text-decoration: none;
+}
+
+#disabledButton {
+	background: #b6bec4;
+  	background-image: -webkit-linear-gradient(top, #b6bec4, #7f878c);
+  	background-image: -moz-linear-gradient(top, #b6bec4, #7f878c);
+  	background-image: -ms-linear-gradient(top, #b6bec4, #7f878c);
+  	background-image: -o-linear-gradient(top, #b6bec4, #7f878c);
+  	background-image: linear-gradient(to bottom, #b6bec4, #7f878c);
+  	-webkit-border-radius: 28;
+  	-moz-border-radius: 28;
+  	border-radius: 28px;
+  	font-family: Arial;
+  	color: #ffffff;
+  	font-size: 14px;
+  	padding: 6px 20px 6px 20px;
+  	text-decoration: none;
+  	margin-left: 15px;
+  	border-style: none;
 }
 
 #clearText {
