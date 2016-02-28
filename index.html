@@ -73,7 +73,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	    	textRadioButton.checked = true;
 	    	// Remove checked attribute to radio button for file
 	    	fileRadioButton.checked = false;
-	    }
+	    }//makeTextRadioChecked
 
 	    // Function to make sure that only the file radio button has the checked attribute
 	    function makeFileRadioChecked() {
@@ -83,7 +83,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	    	fileRadioButton.checked = true;
 	    	// Remove checked attribute to radio button for text
 	    	textRadioButton.checked = false;
-	    }
+	    }//makeFileRadioChecked
 
 	    // Function to change radio button to file
 	    function radioChangeToFile() {
@@ -99,7 +99,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	    		// Remove the checked attribute to the radio button for text
 	    		textRadioButton.checked = false;
 	    	}
-	    }
+	    }//radioChangeToFile
 
 	    // Function to change radio button to text
 	    function radioChangeToText() {
@@ -113,7 +113,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	    		// Remove the checked attribute to the radio button for file
 	    		fileRadioButton.checked = false;
 	    	}
-	    }
+	    }//radioChangeToText
 
 	    // Function to reset the page
 	    function resetPage() {
@@ -132,23 +132,70 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	    		textRadioButton.checked = true;
 	    		fileRadioButton.checked = false;
 	    	}, 100);
-	    }
+	    }//resetPage
 
 	    // Function to clear the text area
 	    function clearTextArea() {
 	    	var textArea = document.getElementById("wordCloudText");
 	    	// Clear the text area
 	    	textArea.value = "";
-	    }
+	    }//clearTextArea
 
-	    // Function to generate single word word clouds
-	    function generateSingleWordCloud() {
-	    	// Create an options object for initialization
+		function displaySingleWordCloud(text) {
+			// Create an options object for initialization
 	    	var options = {
 	        	workerUrl: 'wordfreq-master/src/wordfreq.worker.js',
 	        	minimumCount: 1
 	    	};
 
+			// Generate the word frequencies list and then use the list to generate the wordcloud
+			var wordfreq = WordFreq(options).process(text).getList(function (list) {
+				var canvas = document.getElementById("my_canvas");
+				var listToUse = list;
+				var options = {};
+
+				// Create a shortened list which only has 60 words if the length of original list is more than 60
+				if (list.length > 60) {
+					var shortenedList = list.slice(0, 60);
+					listToUse = shortenedList;
+				}
+
+				// Change the options based on how big the largest word frequency is
+				if (listToUse[0][1] <= 10) {
+					options = {
+						list: listToUse,
+						weightFactor: 10,
+						wait: 50,
+						gridSize: 8,
+						rotateRatio: 0,
+						origin: [400, 400]
+					};
+				} else if (listToUse[0][1] > 10 && listToUse[0][1] <= 20) {
+					options = {
+						list: listToUse,
+						weightFactor: 8,
+						wait: 50,
+						gridSize: 8,
+						rotateRatio: 0,
+						origin: [400, 400]
+					};
+				} else {
+					options = {
+						list: listToUse,
+						weightFactor: 1.5,
+						wait: 50,
+						gridSize: 8,
+						rotateRatio: 0,
+						origin: [400, 400]
+					};
+				}
+				// Generate the wordcloud in the canvas with the options provided
+				var wordcloud = WordCloud(canvas, options);
+			});
+		}//displaySingleWordCloud
+
+	    // Function to generate single word word clouds
+	    function generateSingleWordCloud() {
 	    	// See which radio button is checked
 	    	var textRadioButton = document.getElementById("textRadioSelection");
 	    	var fileRadioButton = document.getElementById("fileRadioSelection");
@@ -168,50 +215,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	      					var fileText = fReader.result;
 	      					// Only generate the word cloud if we have some text
 	      					if (fileText != "") {
-	      						// Generate the word frequencies list and then use the list to generate the wordcloud
-	      						var wordfreq = WordFreq(options).process(fileText).getList(function (list) {
-	        						var canvas = document.getElementById("my_canvas");
-	        						var listToUse = list;
-	        						var options = {};
-
-	        						// Create a shortened list which only has 60 words if the length of original list is more than 60
-	        						if (list.length > 60) {
-	        							var shortenedList = list.slice(0, 60);
-	        							listToUse = shortenedList;
-	        						}
-
-									// Change the options based on how big the largest word frequency is
-	        						if (listToUse[0][1] <= 10) {
-	        							options = {
-	          								list: listToUse,
-	          								weightFactor: 10,
-	          								wait: 50,
-	          								gridSize: 8,
-	          								rotateRatio: 0,
-	          								origin: [400, 400]
-	        							};
-	        						} else if (listToUse[0][1] > 10 && listToUse[0][1] <= 20) {
-	        							options = {
-	          								list: listToUse,
-	          								weightFactor: 8,
-	          								wait: 50,
-	          								gridSize: 8,
-	          								rotateRatio: 0,
-	          								origin: [400, 400]
-	        							};
-	        						} else {
-	        							options = {
-	          								list: listToUse,
-	          								weightFactor: 1.5,
-	          								wait: 50,
-	          								gridSize: 8,
-	          								rotateRatio: 0,
-	          								origin: [400, 400]
-	        							};
-	        						}
-	        						// Generate the wordcloud in the canvas with the options provided
-	        						var wordcloud = WordCloud(canvas, options);
-	      						});
+	      						displaySingleWordCloud(fileText);
 	      					} else {
 	      						// Clear the canvas as we have no text
 	      						var canvas = document.getElementById("my_canvas");
@@ -243,50 +247,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 									// Generate the word cloud if we have read all the pages in the file
 									if (currPage == numPages + 1) {
 										overallText = pageText;
-										// Generate the word frequencies list and then use the list to generate the wordcloud
-										var wordfreq = WordFreq(options).process(overallText).getList(function (list) {
-											var canvas = document.getElementById("my_canvas");
-											var listToUse = list;
-											var options = {};
-
-											// Create a shortened list which only has 60 words if the length of original list is more than 60
-											if (list.length > 60) {
-												var shortenedList = list.slice(0, 60);
-												listToUse = shortenedList;
-											}
-
-											// Change the options based on how big the largest word frequency is
-											if (listToUse[0][1] <= 10) {
-												options = {
-													list: listToUse,
-													weightFactor: 10,
-													wait: 50,
-													gridSize: 8,
-													rotateRatio: 0,
-													origin: [400, 400]
-												};
-											} else if (listToUse[0][1] > 10 && listToUse[0][1] <= 20) {
-												options = {
-													list: listToUse,
-													weightFactor: 8,
-													wait: 50,
-													gridSize: 8,
-													rotateRatio: 0,
-													origin: [400, 400]
-												};
-											} else {
-												options = {
-													list: listToUse,
-													weightFactor: 1.5,
-													wait: 50,
-													gridSize: 8,
-													rotateRatio: 0,
-													origin: [400, 400]
-												};
-											}
-											// Generate the wordcloud in the canvas with the options provided
-											var wordcloud = WordCloud(canvas, options);
-										});
+										displaySingleWordCloud(overallText);
 									}
 								});
 								// Move on to the next page
@@ -317,50 +278,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	      		var text = document.getElementById("wordCloudText").value;
 	      		// Only generate the word cloud if the text area is not empty
 	      		if (text != "") {
-	      			// Generate the word frequencies list and then use the list to generate the wordcloud
-	      			var wordfreq = WordFreq(options).process(text).getList(function (list) {
-	        			var canvas = document.getElementById("my_canvas");
-	        			var listToUse = list;
-	        			var options = {};
-
-	        			// Create a shortened list which only has 60 words if the length of original list is more than 60
-	        			if (list.length > 60) {
-	        				var shortenedList = list.slice(0, 60);
-	        				listToUse = shortenedList;
-	        			}
-
-						// Change the options based on how big the largest word frequency is
-	        			if (listToUse[0][1] <= 10) {
-	        				options = {
-	          					list: listToUse,
-	          					weightFactor: 10,
-	          					wait: 50,
-	          					gridSize: 8,
-	          					rotateRatio: 0,
-	          					origin: [400, 400]
-	        				};
-	        			} else if (listToUse[0][1] > 10 && listToUse[0][1] <= 20) {
-	        				options = {
-	          					list: listToUse,
-	          					weightFactor: 8,
-	          					wait: 50,
-	          					gridSize: 8,
-	          					rotateRatio: 0,
-	          					origin: [400, 400]
-	        				};
-	        			} else {
-	        				options = {
-	          					list: listToUse,
-	          					weightFactor: 1.5,
-	          					wait: 50,
-	          					gridSize: 8,
-	          					rotateRatio: 0,
-	          					origin: [400, 400]
-	        				};
-	        			}
-	        			// Generate the wordcloud in the canvas with the options provided
-	        			var wordcloud = WordCloud(canvas, options);
-	      			});
+					displaySingleWordCloud(text);
 	      		} else {
 	      			// Clear the canvas as we have no text
 	      			var canvas = document.getElementById("my_canvas");
@@ -400,8 +318,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	    	// Send the POST request
 	    	xmlhttp.setRequestHeader('Content-Type', 'text/xml');
 	    	xmlhttp.send(sr);
-
-	      // alert('Unfortunately this function has not been implemented yet');
 	    }//generateCompoundWordCloud
 	    </script>
 	</body>
