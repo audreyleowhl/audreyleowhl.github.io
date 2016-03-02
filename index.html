@@ -154,6 +154,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 				var canvas = document.getElementById("my_canvas");
 				var listToUse = list;
 				var options = {};
+				var weight = 0;
 
 				// Create a shortened list which only has 60 words if the length of original list is more than 60
 				if (list.length > 60) {
@@ -164,27 +165,25 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 				//TODO -- Create a function to calculate weightFactor based on how big the largest word frequency is
 				// Change the options based on how big the largest word frequency is
 				if (listToUse[0][1] <= 10) {
-					options = {
-						list: listToUse,
-						weightFactor: 10,
-						wait: 50,
-						rotateRatio: 0
-					};
+					weight = 10;
 				} else if (listToUse[0][1] > 10 && listToUse[0][1] <= 20) {
-					options = {
-						list: listToUse,
-						weightFactor: 8,
-						wait: 50,
-						rotateRatio: 0
-					};
+					weight = 8;
+				} else if (listToUse[0][1] > 20 && listToUse[0][1] <= 50){
+					weight = 4;
+				} else if (listToUse[0][1] > 50 && listToUse[0][1] <= 100) {
+					weight = 2.5;
 				} else {
-					options = {
-						list: listToUse,
-						weightFactor: 1.5,
-						wait: 50,
-						rotateRatio: 0
-					};
+					weight = 0.2;
 				}
+
+				// Generate the options
+				options = {
+					list: listToUse,
+					weightFactor: weight,
+					wait: 50,
+					rotateRatio: 0
+				};
+
 				// Generate the wordcloud in the canvas with the options provided
 				var wordcloud = WordCloud(canvas, options);
 			});
