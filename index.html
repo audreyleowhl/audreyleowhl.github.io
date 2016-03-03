@@ -162,8 +162,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 					listToUse = shortenedList;
 				}
 
+				console.log("Word with largest word frequency: " + listToUse[0][0]);
+				console.log("Word frequency for that word: " + listToUse[0][1]);
+
 				//TODO -- Create a function to calculate weightFactor based on how big the largest word frequency is
-				// Change the options based on how big the largest word frequency is
+				// Change the weightFactor based on how big the largest word frequency is
 				if (listToUse[0][1] <= 10) {
 					weight = 10;
 				} else if (listToUse[0][1] > 10 && listToUse[0][1] <= 20) {
