@@ -14,7 +14,7 @@ h1 {
 
 body {
 	font-family: Arial;
-	margin: 0 0 100px; /* bottom = footer height */
+	margin: 0 0 150px; /* bottom = footer height */
 }
 
 p {
@@ -66,7 +66,7 @@ footer {
 
 #controls {
 	width: 400px;
-	height: 620px;
+	height: 680px;
 	border-style: solid;
 	float: right;
 	margin-right: 20px;
@@ -155,7 +155,7 @@ footer {
 }
 
 .selection {
-	margin-left: 80px;
+	margin-left: 60px;
 }
 
 #fileUpload {

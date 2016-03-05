@@ -42,13 +42,20 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
         			<input class="formContents" id="fileUpload" type="file" accept="application/pdf,text/html,text/plain" onchange="radioChangeToFile()"></input>
         		</div>
 
+				<p class="formContents">Or enter a URL here:</p>
+        		<input class="formContents" id="url" type="text" size="61" onkeyup="radioChangeToUrl()"></input>
+
         		<br>
+				<br>
         		<div class="formBox formContents">
         			<input class="selection" id="textRadioSelection" name="radioSelection" type="radio" value="text" onclick="makeTextRadioChecked()">
         				<label>Text</label>
         			</input>
         			<input class="selection" id="fileRadioSelection" name="radioSelection" type="radio" value="file" onclick="makeFileRadioChecked()">
         				<label>File</label>
+        			</input>
+					<input class="selection" id="urlRadioSelection" name="radioSelection" type="radio" value="url" onclick="makeUrlRadioChecked()">
+        				<label>URL</label>
         			</input>
         		</div>
 
@@ -58,7 +65,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
       		</form>
     	</div>
     	<!-- <div id="my_canvas"></div> -->
-		<canvas id="my_canvas" width="800" height="620"></canvas>
+		<canvas id="my_canvas" width="800" height="680"></canvas>
 
     	<footer>
     		<p class="footer">Created by Audrey Leow, with help from other external sources</p>
@@ -70,21 +77,43 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	    function makeTextRadioChecked() {
 	    	var textRadioButton = document.getElementById("textRadioSelection");
 	    	var fileRadioButton = document.getElementById("fileRadioSelection");
+			var urlRadioButton = document.getElementById("urlRadioSelection");
+
 	    	// Add checked attribute to the radio button for text
 	    	textRadioButton.checked = true;
 	    	// Remove checked attribute to radio button for file
 	    	fileRadioButton.checked = false;
+			// Remove checked attribute to radio button for URL
+			urlRadioButton.checked = false;
 	    }//makeTextRadioChecked
 
 	    // Function to make sure that only the file radio button has the checked attribute
 	    function makeFileRadioChecked() {
 	    	var textRadioButton = document.getElementById("textRadioSelection");
 	    	var fileRadioButton = document.getElementById("fileRadioSelection");
+			var urlRadioButton = document.getElementById("urlRadioSelection");
+
 	    	// Add checked attribute to radio button for file
 	    	fileRadioButton.checked = true;
 	    	// Remove checked attribute to radio button for text
 	    	textRadioButton.checked = false;
+			// Remove checked attribute to radio button for URL
+			urlRadioButton.checked = false;
 	    }//makeFileRadioChecked
+
+		//TODO
+		function makeUrlRadioChecked() {
+			var textRadioButton = document.getElementById("textRadioSelection");
+			var fileRadioButton = document.getElementById("fileRadioSelection");
+			var urlRadioButton = document.getElementById("urlRadioSelection");
+
+			// Add checked attribute to radio button for URL
+			urlRadioButton.checked = true;
+			// Remove checked attribute to radio button for text
+			textRadioButton.checked = false;
+			// Remove checked attribute to radio button for file
+			fileRadioButton.checked = false;
+		}//makeUrlRadioChecked
 
 	    // Function to change radio button to file
 	    function radioChangeToFile() {
@@ -93,12 +122,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 
 	    	var textRadioButton = document.getElementById("textRadioSelection");
 	    	var fileRadioButton = document.getElementById("fileRadioSelection");
+			var urlRadioButton = document.getElementById("urlRadioSelection");
 
 			if (file) {
 				// If there is, then add the checked attribute to the radio button for file
 				fileRadioButton.checked = true;
 	    		// Remove the checked attribute to the radio button for text
 	    		textRadioButton.checked = false;
+				// Remove the checked attribute to the radio button for URL
+				urlRadioButton.checked = false;
 	    	}
 	    }//radioChangeToFile
 
@@ -107,14 +139,34 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	    	var text = document.getElementById("wordCloudText").value;
 	    	var textRadioButton = document.getElementById("textRadioSelection");
 	    	var fileRadioButton = document.getElementById("fileRadioSelection");
+			var urlRadioButton = document.getElementById("urlRadioSelection");
 
 	    	if (text != "") {
 	    		// If there is, then add the checked attribute to the radio button for text
 				textRadioButton.checked = true;
 	    		// Remove the checked attribute to the radio button for file
 	    		fileRadioButton.checked = false;
+				// Remove the checked attribute to the radio button for URL
+				urlRadioButton.checked = false;
 	    	}
 	    }//radioChangeToText
+
+		//TODO
+		function radioChangeToUrl() {
+			var urlText = document.getElementById("url").value;
+			var textRadioButton = document.getElementById("textRadioSelection");
+			var fileRadioButton = document.getElementById("fileRadioSelection");
+			var urlRadioButton = document.getElementById("urlRadioSelection");
+
+			if (url != "") {
+				// If there is, then add the checked attribute to the radio button for text
+				urlRadioButton.checked = true;
+				// Remove the checked attribute to the radio button for file
+				textRadioButton.checked = false;
+				// Remove the checked attribute to the radio button for URL
+				fileRadioButton.checked = false;
+			}
+		}//radioChangeToUrl
 
 	    // Function to reset the page
 	    function resetPage() {
@@ -125,13 +177,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	    		var fileInput = document.getElementById("fileUpload");
 	    		// Clear the file input
 	    		fileInput.value = "";
+				var urlInput = document.getElementById("url");
+				// Clear the URL input
+				urlInput.value = "";
 	    		// Set the focus to be on the text area
 	    		var textArea = document.getElementById("wordCloudText");
 	    		textArea.focus();
 	    		var textRadioButton = document.getElementById("textRadioSelection");
 	    		var fileRadioButton = document.getElementById("fileRadioSelection");
+				var urlRadioButton = document.getElementById("urlRadioSelection");
 	    		textRadioButton.checked = true;
 	    		fileRadioButton.checked = false;
+				urlRadioButton.checked = false;
 	    	}, 100);
 	    }//resetPage
 
@@ -142,6 +199,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	    	textArea.value = "";
 	    }//clearTextArea
 
+		// Function to display the word cloud consisting of single words
 		function displaySingleWordCloud(text) {
 			// Create an options object for initialization
 	    	var options = {
@@ -197,6 +255,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	    	// See which radio button is checked
 	    	var textRadioButton = document.getElementById("textRadioSelection");
 	    	var fileRadioButton = document.getElementById("fileRadioSelection");
+			var urlRadioButton = document.getElementById("urlRadioSelection");
 
 	    	if (fileRadioButton.checked) {	// User chose to create word cloud from file
 	    		// Get the contents of the file
@@ -271,7 +330,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	      				alert("This file format is not supported! Please try again.");
 	      			}
 	  			}
-	    	} else {	// User chose to create word cloud from text
+	    	} else if (textRadioButton.checked) {	// User chose to create word cloud from text
 	    		// Get the text in the textarea
 	      		var text = document.getElementById("wordCloudText").value;
 	      		// Only generate the word cloud if the text area is not empty
@@ -282,7 +341,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 	      			var canvas = document.getElementById("my_canvas");
 	      			canvas.innerHTML = "";
 	      		}
-	    	}
+	    	} else {	// User chose to create word cloud from URL
+				// Get the URL text from the input
+				var urlText = document.getElementById("url").value;
+				// Only generate the word cloud if there is some URL text
+				if (urlText != "") {
+					var xmlhttp = new XMLHttpRequest();
+			    	xmlhttp.open('GET', urlText, true);
+					xmlhttp.onreadystatechange = function () {
+			    		if(xmlhttp.readyState == 4) {
+			    			if(xmlhttp.status == 200) {
+			    				alert('done. use firebug/console to see network response');
+			    			}
+			    		}
+			    	}
+					xmlhttp.send();
+				} else {
+					// Clear the canvas as we have no text
+	      			var canvas = document.getElementById("my_canvas");
+	      			canvas.innerHTML = "";
+				}
+			}
 	    }//generateSingleWordCloud
 
 	    // Function to generate compound word word clouds
