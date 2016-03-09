@@ -3,7 +3,7 @@ html {
    	min-height: 100%;
 }
 
-h1 {
+#headerTitle {
 	color: #ffffff;
 	font-family: 'Helvetica Neue', sans-serif;
 	font-size: 60px;
@@ -17,10 +17,14 @@ body {
 	margin: 0 0 150px; /* bottom = footer height */
 }
 
-p {
+p, ul {
 	color: #47476b;
 	font-family: 'Helvetica Neue', sans-serif;
 	font-size: 14px;
+}
+
+code {
+	color: #9900cc;
 }
 
 label {
@@ -162,7 +166,7 @@ footer {
 	margin-left: 75px;
 }
 
-.instructions {
+.headerButton {
 	background: #33adff;
   	background-image: -webkit-linear-gradient(top, #33adff, #2692d1);
   	background-image: -moz-linear-gradient(top, #33adff, #2692d1);
@@ -180,7 +184,7 @@ footer {
   	text-decoration: none;
 }
 
-.instructions:hover {
+.headerButton:hover {
 	background: #3cb0fd;
   	background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
   	background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
@@ -188,4 +192,18 @@ footer {
   	background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
   	background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
   	text-decoration: none;
+}
+
+#aboutProject {
+	margin-left: 20px;
+}
+
+.externalResources {
+	text-decoration: none;
+	color: #3366cc;
+}
+
+.externalResources:visited {
+	text-decoration: none;
+	color: #3366cc;
 }
