@@ -39,7 +39,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 
         		<p class="formContents">Or upload your file here:</p>
         		<div class="formBox formContents">
-        			<input class="formContents" id="fileUpload" type="file" accept="application/pdf,text/html,text/plain" onchange="radioChangeToFile()"></input>
+					<input class="formContents" id="fileUpload" type="file" accept="application/pdf,text/html,text/plain" onchange="radioChangeToFile()"></input>
         		</div>
 
 				<p class="formContents">Or enter a URL here:</p>
@@ -132,8 +132,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 				// Remove the checked attribute to the radio button for URL
 				urlRadioButton.checked = false;
 	    	}
-
-			
 	    }//radioChangeToFile
 
 	    // Function to change radio button to text
@@ -233,10 +231,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 					weight = 8;
 				} else if (listToUse[0][1] > 20 && listToUse[0][1] <= 50){
 					weight = 4;
-				} else if (listToUse[0][1] > 50 && listToUse[0][1] <= 100) {
+				} else if (listToUse[0][1] > 50 && listToUse[0][1] <= 70) {
 					weight = 2.5;
+				} else if (listToUse[0][1] > 70 && listToUse[0][1] <= 100) {
+					weight = 1;
 				} else {
-					weight = 0.2;
+					weight = 0.17;
 				}
 
 				// Generate the options
