@@ -164,6 +164,10 @@ footer {
 
 #fileUpload {
 	margin-left: 75px;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 250px;
 }
 
 .headerButton {
@@ -206,4 +210,8 @@ footer {
 .externalResources:visited {
 	text-decoration: none;
 	color: #3366cc;
+}
+
+#url{
+	width: 355px;
 }
