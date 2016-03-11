@@ -14,7 +14,7 @@ html {
 
 body {
 	font-family: Arial;
-	margin: 0 0 150px; /* bottom = footer height */
+	margin: 0 0 100px; /* bottom = footer height */
 }
 
 p, ul {
@@ -78,6 +78,7 @@ footer {
 
 #my_canvas {
 	margin-left: 20px;
+	border-style: solid;
 }
 
 #wordCloudText {
@@ -184,7 +185,7 @@ footer {
   	border-style: none;
   	float: right;
   	margin-top: -100px;
-  	margin-right: 10px;
+  	margin-right: 20px;
   	text-decoration: none;
 }
 
