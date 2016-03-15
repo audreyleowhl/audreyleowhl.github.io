@@ -61,7 +61,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 
         		<br>
         		<button id="wordCloudButton" type="button" onclick="generateSingleWordCloud()">Single word cloud</button>
-        		<button id="disabledButton" type="button" onclick="generateCompoundWordCloud()" disabled="disabled">Compound word cloud</button>
+        		<!-- <button id="disabledButton" type="button" onclick="generateCompoundWordCloud()" disabled="disabled">Compound word cloud</button> -->
+				<button id="wordCloudButton" type="button" onclick="generateCompoundWordCloud()">Compound word cloud</button>
       		</form>
     	</div>
     	<!-- <div id="my_canvas"></div> -->
@@ -370,35 +371,77 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 
 	    // Function to generate compound word word clouds
 	    function generateCompoundWordCloud() {
-	    	var xmlhttp = new XMLHttpRequest();
-	    	xmlhttp.open('POST', 'http://www.nactem.ac.uk/software/termine/webservice_key/', true);
+	    	// TODO
+			// Find for file in home directory
+			// Get the contents of the file
+			var fileContents = document.getElementById("fileUpload").files;
+			var file = fileContents[0];
 
-	    	// Build SOAP request
-	    	var sr =
-	    		'<?xml version="1.0" encoding="UTF-8"?>' +
-	    		'<soapenv:Envelope ' +
-	    			'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
-	    			'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
-	    			'xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">' +
-	    			'<soapenv:Body>' +
-	    				'<api:analyze soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
-	    					'<src xsi:type="xsd:string">ice cream ice cream ice cream ice cream ice cream</src>' +
-	    					'<key xsi:type="xsd:string">32de8fd45de222f7cacac28b42516db5aa86fda6b798bcfd49dd2d4</key>' +
-	    				'</api:analyze>' +
-	    			'</soapenv:Body>' +
-	    		'</soapenv:Envelope>';
+			if (file) {
+				var fReader = new FileReader();
+				var textType = /text.*/;
 
-	    	xmlhttp.onreadystatechange = function () {
-	    		if(xmlhttp.readyState == 4) {
-	    			if(xmlhttp.status == 200) {
-	    				alert('done. use firebug/console to see network response');
-	    			}
-	    		}
-	    	}
+				if (file.type.match(textType)) {
+					fReader.onload = function(e) {
+						var fileText = fReader.result;
+						// Only generate the word cloud if we have some text
+						if (fileText != "") {
+							// Parse file and create list for wordcloud2.js
+							var fileTextList = fileText.split("\n");
+							var listToUse = [];
+							for (var row = 0; row < fileTextList.length; row++) {
+								if (fileTextList[row] != "") {
+									var rowList = fileTextList[row].split("\t");
+									listToUse.push([rowList[1], rowList[0]]);
+								}
+							}
 
-	    	// Send the POST request
-	    	xmlhttp.setRequestHeader('Content-Type', 'text/xml');
-	    	xmlhttp.send(sr);
+							var canvas = document.getElementById("my_canvas");
+							var options = {};
+							var weight = 0;
+
+							// Create a shortened list which only has 60 words if the length of original list is more than 60
+							if (listToUse.length > 60) {
+								var shortenedList = listToUse.slice(0, 60);
+								listToUse = shortenedList;
+							}
+
+							if (listToUse[0][1] <= 10) {
+								weight = 10;
+							} else if (listToUse[0][1] > 10 && listToUse[0][1] <= 20) {
+								weight = 8;
+							} else if (listToUse[0][1] > 20 && listToUse[0][1] <= 50){
+								weight = 4;
+							} else if (listToUse[0][1] > 50 && listToUse[0][1] <= 70) {
+								weight = 2.5;
+							} else if (listToUse[0][1] > 70 && listToUse[0][1] <= 100) {
+								weight = 1;
+							} else {
+								weight = 0.17;
+							}
+
+							// Generate the options
+							options = {
+								list: listToUse,
+								weightFactor: weight,
+								wait: 50,
+								rotateRatio: 0
+							};
+
+							// Generate the wordcloud in the canvas with the options provided
+							var wordcloud = WordCloud(canvas, options);
+						} else {
+							// Clear the canvas as we have no text
+							var canvas = document.getElementById("my_canvas");
+							canvas.innerHTML = "";
+						}
+					}
+					// Read the contents of the text file
+					fReader.readAsText(file);
+				} else {
+					alert("This file format is not supported! Please try again.");
+				}
+			}
 	    }//generateCompoundWordCloud
 	    </script>
 	</body>
