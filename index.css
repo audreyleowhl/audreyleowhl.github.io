@@ -70,7 +70,7 @@ footer {
 
 #controls {
 	width: 400px;
-	height: 680px;
+	height: 650px;
 	border-style: solid;
 	float: right;
 	margin-right: 20px;
@@ -159,7 +159,7 @@ footer {
 }
 
 .selection {
-	margin-left: 60px;
+	margin-left: 80px;
 }
 
 #fileUpload {
