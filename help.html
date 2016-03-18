@@ -29,9 +29,21 @@
 
                 You can also choose to generate word clouds consisting of either single words or compound words by clicking on the buttons <code>Single word cloud</code> and <code>Compound word cloud</code> respectively. If you are not happy with the created word cloud, clicking on the button again will regenerate the word cloud.<br><br>
 
-                The <code>Clear text</code> button allows you to clear all the text in the text area, and clicking on <code>How to use</code> opens up this page on a new tab or window, allowing you to see what can be done in this web application and more information about it.<br><br>
+                The <code>Clear text</code> button allows you to clear all the text in the text area, and clicking on <code>How to use</code> allows you to see what can be done in this web application and more information about it.
+            </p>
 
-                The <code>Compound word cloud</code> button is currently disabled while I work on the functionality for it.
+            <h2>How to generate compound word clouds</h2>
+            <p>
+              To generate compound word clouds, you will need to select a text file in your local system which contains the following format:
+            </p>
+            <pre>
+                8   ice cream
+                1   compound word
+            </pre>
+            <p>
+              where the numbers represent the frequency of the compound word. The spacing between the frequency and the compound word should be a tab key.<br><br>
+
+              Once the text file has been selected, you can click on the <code>Compound word cloud</code> button to generate the compound word cloud from the text file.
             </p>
 
             <h1>Web browsers</h1>
@@ -58,6 +70,7 @@
                     <li><a class="externalResources" href="https://github.com/timdream/wordfreq" target="_blank">wordfreq</a> by timdream</li>
                     <li><a class="externalResources" href="https://github.com/timdream/wordcloud2.js" target="_blank">wordcloud2.js</a> by timdream</li>
                     <li><a class="externalResources" href="https://mozilla.github.io/pdf.js/" target="_blank">pdf.js</a> by mozilla</li>
+                    <li><a class="externalResources" href="http://www.nactem.ac.uk/software/termine/webservice_key/" target="_blank">Termine web service</a> by NaCTeM</li>
                 </ul>
             </p>
         </div>
